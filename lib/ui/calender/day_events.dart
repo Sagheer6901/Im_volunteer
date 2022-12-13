@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:i_am_volunteer/controllers/home_controller.dart';
 import 'package:i_am_volunteer/utils/app_colors.dart';
-import 'package:i_am_volunteer/widgets/custom_scaffold.dart';
-import 'package:get/get.dart';
 import 'package:i_am_volunteer/widgets/custom_text.dart';
 
 import '../../controllers/calender_screen_controller.dart';
@@ -12,7 +11,7 @@ class DayEvents extends StatelessWidget {
   final controller = Get.find<CalenderScreenController>();
   final homeController = Get.find<HomeScreenController>();
 
-   DayEvents({Key? key}) : super(key: key);
+  DayEvents({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +23,14 @@ class DayEvents extends StatelessWidget {
   Widget _getBody() {
     var data = Get.arguments;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20,top: 20),
+      padding: const EdgeInsets.only(bottom: 20, top: 20),
       child: Column(
         children: [
-
           StreamBuilder<QuerySnapshot>(
-              stream:
-              FirebaseFirestore.instance.collection('events').where('eventDate',isEqualTo: data).snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('events')
+                  .where('eventDate', isEqualTo: data)
+                  .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -51,14 +51,13 @@ class DayEvents extends StatelessWidget {
                         children: snapshot.data!.docs
                             .map((DocumentSnapshot document) {
                           Map<String, dynamic> data =
-                          document.data()! as Map<String, dynamic>;
+                              document.data()! as Map<String, dynamic>;
                           return postWidget(
                               title: data['title'],
                               image: data['image'],
                               name: data['adminName'],
                               profileImage: data['adminImage'],
-                              openEvent: data['openEvent']
-                          );
+                              openEvent: data['openEvent']);
                         }).toList()));
                 //     return Text('nodata');
                 //   }),
@@ -71,6 +70,7 @@ class DayEvents extends StatelessWidget {
       ),
     );
   }
+
   Widget profileImageWidget({required String image}) {
     return CircleAvatar(
       radius: 22,
@@ -105,32 +105,33 @@ class DayEvents extends StatelessWidget {
         const Spacer(),
         isEventOpen
             ? GestureDetector(
-          onTap: () {
-            // homeController.onApplyVolunteer();
-          },
-          child: Container(
-            height: 40,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                    color: AppColors.primary.withOpacity(0.4), width: 2)),
-            child: const CustomText(
-              text: 'Apply For Volunteer',
-              weight: FontWeight.w600,
-            ),
-          ),
-        )
+                onTap: () {
+                  // homeController.onApplyVolunteer();
+                },
+                child: Container(
+                  height: 40,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: AppColors.primary.withOpacity(0.4), width: 2)),
+                  child: const CustomText(
+                    text: 'Apply For Volunteer',
+                    weight: FontWeight.w600,
+                  ),
+                ),
+              )
             : const SizedBox()
       ],
     );
   }
+
   Widget postWidget(
       {required String title,
-        required String image,
-        required String name,
-        required String profileImage,
-        required bool openEvent}) {
+      required String image,
+      required String name,
+      required String profileImage,
+      required bool openEvent}) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: Container(
@@ -152,16 +153,16 @@ class DayEvents extends StatelessWidget {
                 ),
                 Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: name,
-                          color: AppColors.primary,
-                          weight: FontWeight.w600,
-                        ),
-                        CustomText(text: title)
-                      ],
-                    )),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: name,
+                      color: AppColors.primary,
+                      weight: FontWeight.w600,
+                    ),
+                    CustomText(text: title)
+                  ],
+                )),
                 const Icon(Icons.more_vert),
               ],
             ),
@@ -177,4 +178,3 @@ class DayEvents extends StatelessWidget {
     );
   }
 }
-

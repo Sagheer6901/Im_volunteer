@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:i_am_volunteer/controllers/manage_event_controller.dart';
 import 'package:i_am_volunteer/widgets/custom_scaffold.dart';
 
+import '../utils/app_colors.dart';
+
 class VolunteerCards extends StatelessWidget {
   final controller = Get.put(ManageEventController());
 
@@ -16,36 +18,50 @@ class VolunteerCards extends StatelessWidget {
       scaffoldKey: controller.scaffoldKey,
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection('users').doc("Y3feimlhlSOu4iDotiSK9nIM5ZC2").collection("eventCards").snapshots(),
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot> snapshot) {
+            .collection('users')
+            .doc("Y3feimlhlSOu4iDotiSK9nIM5ZC2")
+            .collection("eventCards")
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text('Something went wrong');
+            return const Text('Something went wrong');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return const Text("Loading");
           }
           return Wrap(
-              alignment: WrapAlignment.center,
-              // shrinkWrap: true,
-              // itemCount: snapshot.data!.docs.length,
-              // itemBuilder: ((context, index) {
-              children:
-              snapshot.data!.docs.map((DocumentSnapshot document) {
+            alignment: WrapAlignment.center,
+            spacing: 10,
+            children: snapshot.data!.docs.map(
+              (DocumentSnapshot document) {
                 Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
-                // return Text("data ${data['email']}");
+                    document.data()! as Map<String, dynamic>;
                 return Container(
-                  height: 35,
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  padding: EdgeInsets.all(10),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.primary,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      20,
+                    ),
+                  ),
                   child: InkWell(
-                      onTap: (){
-                        controller.download(data['volunteerCard']);
-                      },
-                      child: Text(data['eventName'])),);
-              }).toList());
+                    onTap: () {
+                      controller.download(data['volunteerCard']);
+                    },
+                    child: Text(
+                      data['eventName'],
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
+          );
         },
-      ), screenName: 'Manage Events',
+      ),
+      screenName: 'Manage Events',
     );
   }
 }
