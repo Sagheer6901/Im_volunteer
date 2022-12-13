@@ -3,12 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_am_volunteer/controllers/custom_navigation_drawer_controller.dart';
+import 'package:i_am_volunteer/services/locator.dart';
 import 'package:i_am_volunteer/utils/app_assets.dart';
 import 'package:i_am_volunteer/utils/app_colors.dart';
 import 'package:i_am_volunteer/widgets/custom_text.dart';
 
+import '../services/auth_service.dart';
+
 class CustomNavigationDrawer extends StatelessWidget {
   final controller = Get.find<CustomNavigationDrawerController>();
+  final authService = locator.get<AuthService>();
+
   CustomNavigationDrawer({super.key});
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                 child: Center(
                   child: Column(
                     children: [
-                  controller.authService.user!.image==null?
+                  authService.user!.image==null?
                       CircleAvatar(
                         radius: 40,
                         backgroundImage: AssetImage(AppAssets.personImage2),
@@ -35,7 +40,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                         backgroundColor: AppColors.primary.withOpacity(0.4),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(35),
-                            child: Image.network(controller.authService.user!.image.toString(), fit: BoxFit.cover)
+                            child: Image.network(authService.user!.image.toString(), fit: BoxFit.cover)
                         ),
                       ),
                       // const CircleAvatar(

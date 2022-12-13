@@ -37,7 +37,7 @@ class AddEventController extends GetxController{
   }
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  Uint8List? webImage = Uint8List(8);
+  Rx<Uint8List?> webImage = Rx(Uint8List(8));
   var len = 1.obs;
 
   var localImage= "".obs;
@@ -66,7 +66,7 @@ class AddEventController extends GetxController{
     await picker.pickImage(source: ImageSource.gallery);
     if (imagePicker != null) {
       Uint8List bytes = await imagePicker.readAsBytes();
-      webImage = bytes;
+      webImage.value = bytes;
       len.value = bytes.length;
     } else {
       if (kDebugMode) {
@@ -80,7 +80,7 @@ class AddEventController extends GetxController{
       firebase_storage.Reference imageRef = firebase_storage
           .FirebaseStorage.instance
           .ref('eventImages/CHBmVSIxK6gJeMnEYgcD4sVbGdF2-${FirebaseAuth.instance.currentUser!.uid}');
-      UploadTask task = imageRef.putData(webImage!);
+      UploadTask task = imageRef.putData(webImage.value!);
       await Future.value(task);
       FirebaseFirestore.instance.collection('events').add({
         "adminImage": adminImage,

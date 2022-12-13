@@ -10,6 +10,9 @@ class UserModel {
   Role? role;
   String? uid;
   String? token;
+  int? batch;
+  List? events;
+  bool? volunteer;
 
   UserModel({
     this.cardImage,
@@ -21,6 +24,9 @@ class UserModel {
     this.role,
     this.uid,
     this.token,
+    this.batch,
+    this.events,
+    this.volunteer,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -29,10 +35,13 @@ class UserModel {
     email = json['email'];
     image = json['image'];
     name = json['name'];
+    batch = json['batch'];
     phoneNumber = json['phoneNumber'];
     role = json['role'] != null ? Role.values.byName(json['role']) : null;
     uid = json['uid'];
+    events = json['events'] as List;
     token = json['token'];
+    volunteer = json['volunteer'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,10 +51,13 @@ class UserModel {
     data['email'] = email;
     data['image'] = image;
     data['name'] = name;
+    data['batch'] = batch;
     data['phoneNumber'] = phoneNumber;
     data['role'] = role?.name;
     data['uid'] = uid;
+    data['events'] =events;
     data['token'] = token;
+    data['volunteer'] = volunteer;
     return data;
   }
 

@@ -138,7 +138,7 @@ class HomeScreen extends StatelessWidget {
               // );
             },
           ),
-          controllerAuth.authService.user!.email!.contains("admin")?Container(
+          controllerAuth.authService.user!.isAdmin()?Container(
               height: 40,
               margin: EdgeInsets.only(bottom: 50,top: 10),
               child: CustomButton(label: "Add Event",color: AppColors.secondary,textColor: AppColors.primary, onTap: (){

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/foundation.dart';
@@ -19,7 +20,10 @@ class UserProfileScreenController extends GetxController {
   // TextEditingController passwordController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController deptController = TextEditingController();
-  Uint8List? webImage, webImage1 = Uint8List(8);
+  // Uint8List? webImage, webImage1 = Uint8List(8);
+  Rx<Uint8List?> webImage = Rx(Uint8List(8));
+  Rx<Uint8List?> webImage1 = Rx(Uint8List(8));
+
   String? localImage, localImage1;
   // TextEditingController passwordController = TextEditingController();
   pick(imageType) async {
@@ -29,9 +33,9 @@ class UserProfileScreenController extends GetxController {
     if (imagePicker != null) {
       Uint8List bytes = await imagePicker.readAsBytes();
       if (imageType == 1) {
-        webImage = bytes;
+        webImage.value = bytes;
       } else {
-        webImage1 = bytes;
+        webImage1.value = bytes;
       }
     } else {
       if (kDebugMode) {
@@ -44,13 +48,13 @@ class UserProfileScreenController extends GetxController {
     if (imageType == 1) {
       firebase_storage.Reference imageRef = firebase_storage
           .FirebaseStorage.instance
-          .ref('userImages/CHBmVSIxK6gJeMnEYgcD4sVbGdF2-profile');
-      UploadTask task = imageRef.putData(webImage!);
+          .ref('userImages/${FirebaseAuth.instance.currentUser!.uid}-profile');
+      UploadTask task = imageRef.putData(webImage.value!);
       await Future.value(task);
       localImage = await imageRef.getDownloadURL();
       FirebaseFirestore.instance
           .collection('users')
-          .doc("CHBmVSIxK6gJeMnEYgcD4sVbGdF2")
+          .doc("${FirebaseAuth.instance.currentUser!.uid}")
           .update({
         'image': localImage,
       }).then((value) {
@@ -59,13 +63,13 @@ class UserProfileScreenController extends GetxController {
     } else {
       firebase_storage.Reference imageRef = firebase_storage
           .FirebaseStorage.instance
-          .ref('userImages/CHBmVSIxK6gJeMnEYgcD4sVbGdF2-card');
-      UploadTask task = imageRef.putData(webImage1!);
+          .ref('userImages/${FirebaseAuth.instance.currentUser!.uid}-card');
+      UploadTask task = imageRef.putData(webImage1.value!);
       await Future.value(task);
       localImage1 = await imageRef.getDownloadURL();
       FirebaseFirestore.instance
           .collection('users')
-          .doc("CHBmVSIxK6gJeMnEYgcD4sVbGdF2")
+          .doc("${FirebaseAuth.instance.currentUser!.uid}")
           .update({
         'cardImage': localImage1,
       }).then((value) {

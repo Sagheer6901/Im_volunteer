@@ -57,6 +57,7 @@ class CalenderScreen extends StatelessWidget{
                       controller.focusedDay.value = focusedDay;
                   }
                 },
+
                 calendarBuilders: CalendarBuilders(
                   defaultBuilder: (context, day, focusedDay) {
                     for (DateTime d in toHighlight) {

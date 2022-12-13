@@ -17,17 +17,8 @@ class HomeScreenController extends GetxController {
   //   await firestoreService.applyEvent(eventId);
   // }
   final uid = FirebaseAuth.instance.currentUser!.uid;
-  apply(eventId){
-   print("database");
-   var data ={
-     "email":"admin1@gmail.com"
-   };
-   FirebaseFirestore.instance.collection("events").doc(eventId).collection("volunteers").add(data) .then((value) => Get.defaultDialog(
-       title: "Volunteer Application",
-       content: Text(
-         "Applied Succcessfully!",
-         style: TextStyle(fontSize: 16, color: AppColors.primary),
-       )));
+  apply(eventId, data){
+   FirebaseFirestore.instance.collection("events").doc(eventId).collection("volunteers").add(data);
  }
   void onApplyVolunteer(eventId) {
     final docRef = FirebaseFirestore.instance
@@ -47,7 +38,7 @@ class HomeScreenController extends GetxController {
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: AppColors.secondary);
         } else {
-          await apply(eventId);
+          await apply(eventId, data);
 
           //  // var ref =await FirebaseFirestore.instance.collection("volunteers").where("uid",isEqualTo: "Y3feimlhlSOu4iDotiSK9nIM5ZC2").get();
           //  // print(ref.docs.first);

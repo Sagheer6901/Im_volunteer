@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_am_volunteer/services/auth_service.dart';
@@ -22,7 +25,8 @@ class AuthController extends GetxController {
   final messaging = locator.get<MessagingService>();
   final authService = locator.get<AuthService>();
   RxBool loading = false.obs;
-
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
   @override
   void onInit() {
     super.onInit();
@@ -44,6 +48,8 @@ class AuthController extends GetxController {
   }
 
   Future<void> signUp() async {
+    // DocumentReference ref =
+    // firestore.collection('users').doc(auth.currentUser!.uid);
     if (registerFormKey.currentState!.validate()) {
       loading.value = true;
       String email = emailController.text.trim();
@@ -53,7 +59,16 @@ class AuthController extends GetxController {
       final data = {
         'name': name,
         'email': email,
+        'image': null,
+        "batch":null,
+        "cardIamge": null,
+        "dept":null,
+        "events": [],
         'role': Role.user.name,
+        "phoneNumber": null,
+        "rollNo": null,
+        "volunteer": false,
+        // "uid": authService.user.uid,
         'token': token,
       };
       UserModel user = UserModel.fromJson(data);
@@ -63,9 +78,9 @@ class AuthController extends GetxController {
       );
       if (isUserCreated) {
         loading.value = false;
-        UiUtils.showPendingToast(
-          'Account is pending verification\n Please wait till the verification complete.',
-        );
+        // UiUtils.showPendingToast(
+        //   'Account is pending verification\n Please wait till the verification complete.',
+        // );
         Get.toNamed(
           AppRoutes.homeScreen,
         );
