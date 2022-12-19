@@ -113,6 +113,7 @@ class AuthController extends GetxController {
 
   Future<void> login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (loginFormKey.currentState!.validate()) {
       loading.value = true;
       final email = emailController.text.trim();
@@ -122,6 +123,7 @@ class AuthController extends GetxController {
         password: password,
       );
       if (isLoggedIn) {
+        prefs.setString("email", email);
         Get.offAllNamed(AppRoutes.homeScreen);
       } else {
         loading.value = false;

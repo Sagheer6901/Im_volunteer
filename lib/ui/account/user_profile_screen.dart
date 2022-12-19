@@ -381,7 +381,7 @@ class UserProfileScreen extends StatelessWidget {
                 ],
               ),
 
-              controller.authService.user!.email!.contains("admin")
+              data['email'].contains("admin")
                   ? SizedBox()
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -448,7 +448,7 @@ class UserProfileScreen extends StatelessWidget {
                             icon: Icon(Icons.edit))
                       ],
                     ),
-              controller.authService.user!.email!.contains("admin")
+              data['email'].contains("admin")
                   ? SizedBox()
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -523,7 +523,7 @@ class UserProfileScreen extends StatelessWidget {
           ),
         ),
 
-        controller.authService.user!.email!.contains("admin")
+        data['email'].contains("admin")
             ? SizedBox()
             : Column(
                 children: [

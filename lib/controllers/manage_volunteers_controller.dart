@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 class ManageVolunteersController extends GetxController
     with SingleGetTickerProviderMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   late TabController tabController;
   @override
   void onInit() {

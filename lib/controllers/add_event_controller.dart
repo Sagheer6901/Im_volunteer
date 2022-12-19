@@ -79,19 +79,19 @@ class AddEventController extends GetxController{
   uploads() async {
       firebase_storage.Reference imageRef = firebase_storage
           .FirebaseStorage.instance
-          .ref('eventImages/CHBmVSIxK6gJeMnEYgcD4sVbGdF2-${FirebaseAuth.instance.currentUser!.uid}');
+          .ref('eventImages/image-${DateTime.now()}');
       UploadTask task = imageRef.putData(webImage.value!);
       await Future.value(task);
       FirebaseFirestore.instance.collection('events').add({
         "adminImage": adminImage,
         "adminName": adminName,
-        "applied": FieldValue.arrayUnion([]),
+        "applied": FieldValue.arrayUnion([""]),
         "eventDate":eventDate.value.millisecondsSinceEpoch,
         "lastDateForReg": lastDateForReg.value.millisecondsSinceEpoch,
         "description": descriptionController.text,
-        "eventId": DateTime.now().toString(),
+        "eventId": FirebaseFirestore.instance.collection("events").doc().id,
         "image": await imageRef.getDownloadURL(),
-        "likes": FieldValue.arrayUnion([]),
+        "likes": FieldValue.arrayUnion([""]),
         "openEvent": true,
         "title": titleController.text
       });

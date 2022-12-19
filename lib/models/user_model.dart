@@ -39,7 +39,7 @@ class UserModel {
     phoneNumber = json['phoneNumber'];
     role = json['role'] != null ? Role.values.byName(json['role']) : null;
     uid = json['uid'];
-    events = json['events'] as List;
+    events = json['events'] as List?;
     token = json['token'];
     volunteer = json['volunteer'];
   }

@@ -11,9 +11,13 @@ import 'package:i_am_volunteer/widgets/custom_text.dart';
 class ManageVolunteers extends StatelessWidget {
   final controller = Get.put(ManageVolunteersController());
   var docId = "fLf0XG2qfM28FfqzbtDW";
-  ManageVolunteers({super.key});
+  final eventId;
+  ManageVolunteers({super.key, this.eventId});
+
   @override
   Widget build(BuildContext context) {
+print("ss ${eventId}");
+
     print(docId);
     return CustomScaffold(
       showBottomNavigation: false,
@@ -46,8 +50,7 @@ class ManageVolunteers extends StatelessWidget {
                 controller: controller.tabController, children: <Widget>[
               StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection('volunteers')
-                .where('volunteer',isEqualTo: true)
+                    .collection('events').doc(eventId).collection("volunteers")
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {

@@ -39,6 +39,7 @@ class ChatService {
       'message': message,
       'time': FieldValue.serverTimestamp(),
     });
+
     // final ref = await _db
     //     .collection('chats')
     //     .where('participants', isEqualTo: adminUids)
@@ -54,6 +55,7 @@ class ChatService {
     //   log('Chat not found!');
     // }
     // doc.reference
+
   }
 
   Future<bool> chatExists() async {

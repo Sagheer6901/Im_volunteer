@@ -86,6 +86,29 @@ class FirestoreService {
       throw Exception(e.toString());
     }
   }
+  Future<void> applyVolunteer(String eventId) async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final user = await getUserByUid(uid);
+      final commentId =
+          _db.collection('events').doc(eventId).collection('volunteers').doc().id;
+      await _db
+          .collection('events')
+          .doc(eventId)
+          .collection('volunteers')
+          .doc(commentId)
+          .set({
+        'commentId': commentId,
+        'comment': "comment",
+        'commentBy': user.toJson(),
+        'time': FieldValue.serverTimestamp(),
+        'likes': [],
+      });
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
 
   Stream<List<CommentModel>> getCommentsStream(String eventId) {
     return _db

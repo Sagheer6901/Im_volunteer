@@ -61,6 +61,7 @@ class AuthService {
         password: password,
       );
       if (credentials.user != null) {
+        print("users ${credentials.user!.uid}");
         await _dbService.updateToken(credentials.user!.uid);
         final user = await _dbService.getUserData(credentials.user!.uid);
         this.user = user;
@@ -71,6 +72,7 @@ class AuthService {
     } on FirebaseAuthException catch (error) {
       log('ERROR: $error');
       UiUtils.showPendingToast('Error: ${error.message}');
+      print("error : ${error.message}");
       return false;
     }
   }

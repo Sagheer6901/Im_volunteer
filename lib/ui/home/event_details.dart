@@ -77,7 +77,7 @@ class _EventDetailsState extends State<EventDetails>
           children: [
             _postWidget(),
             (FirebaseAuth.instance.currentUser!.email!.contains("admin"))?CustomButton(label: "Manage Volunteers", fontWeight: FontWeight.w500, textSize: 18, textColor: AppColors.primary, onTap: (){
-              Get.to(()=>ManageVolunteers());
+              Get.to(()=>ManageVolunteers( eventId:widget.event.eventId));
             }):SizedBox()
           ],
         ),

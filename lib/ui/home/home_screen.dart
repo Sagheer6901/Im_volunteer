@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:i_am_volunteer/controllers/custom_navigation_drawer_controller.dart';
 import 'package:i_am_volunteer/controllers/home_controller.dart';
 import 'package:i_am_volunteer/main.dart';
+import 'package:i_am_volunteer/models/user_model.dart';
 import 'package:i_am_volunteer/ui/event/add_event.dart';
 import 'package:i_am_volunteer/widgets/custom_button.dart';
 import 'package:i_am_volunteer/widgets/custom_text.dart';
@@ -138,7 +139,7 @@ class HomeScreen extends StatelessWidget {
               // );
             },
           ),
-          controllerAuth.authService.user!.isAdmin()?Container(
+          controllerAuth.authService.user!.role ==Role.admin?Container(
               height: 40,
               margin: EdgeInsets.only(bottom: 50,top: 10),
               child: CustomButton(label: "Add Event",color: AppColors.secondary,textColor: AppColors.primary, onTap: (){

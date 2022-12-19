@@ -67,6 +67,7 @@ class AppRoutes {
       page: () => HomeScreen(),
       bindings: [
         ChatBindings(),
+
         ScreenBinding(),
       ],
     ),
