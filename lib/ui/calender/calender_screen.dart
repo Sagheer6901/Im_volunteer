@@ -16,7 +16,7 @@ class CalenderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: _getBody(controller.toHighlight),
+      body: Obx(()=>_getBody(controller.toHighlight.value)),
       onWillPop: controller.onWillPop,
       scaffoldKey: controller.scaffoldKey,
       screenName: 'Calender Screen',
@@ -42,8 +42,7 @@ class CalenderScreen extends StatelessWidget {
               ),
             ),
           ),
-          Obx(
-            () => Expanded(
+            Expanded(
               child: TableCalendar(
                 shouldFillViewport: true,
                 firstDay: controller.kFirstDay,
@@ -124,7 +123,6 @@ class CalenderScreen extends StatelessWidget {
                 },
               ),
             ),
-          ),
         ],
       ),
     );

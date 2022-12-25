@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:i_am_volunteer/ui/event/add_event.dart';
+import 'package:i_am_volunteer/ui/volunteer/volunteer_detail.dart';
 
 import '../controllers/event_controller.dart';
 import '../ui/admin/manageVolunteers/manage_volunteers.dart';

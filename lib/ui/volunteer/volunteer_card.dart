@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:i_am_volunteer/controllers/manage_event_controller.dart';
 import 'package:i_am_volunteer/widgets/custom_scaffold.dart';
 
-import '../utils/app_colors.dart';
+import '../../utils/app_colors.dart';
 
 class VolunteerCards extends StatelessWidget {
   final controller = Get.put(ManageEventController());

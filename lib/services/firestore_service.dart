@@ -86,20 +86,21 @@ class FirestoreService {
       throw Exception(e.toString());
     }
   }
-  Future<void> applyVolunteer(String eventId) async {
+
+  Future<void> addCommentVolunteer(String vid, String comment) async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
       final user = await getUserByUid(uid);
       final commentId =
-          _db.collection('events').doc(eventId).collection('volunteers').doc().id;
+          _db.collection('users').doc(vid).collection('comments').doc().id;
       await _db
-          .collection('events')
-          .doc(eventId)
-          .collection('volunteers')
+          .collection('users')
+          .doc(vid)
+          .collection('comments')
           .doc(commentId)
           .set({
         'commentId': commentId,
-        'comment': "comment",
+        'comment': comment,
         'commentBy': user.toJson(),
         'time': FieldValue.serverTimestamp(),
         'likes': [],
@@ -109,6 +110,39 @@ class FirestoreService {
     }
   }
 
+  Future<void> applyVolunteer(String eventId,userData) async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final user = await getUserByUid(uid);
+      final commentId =
+          _db.collection('events').doc(eventId).collection('volunteers').doc().id;
+      userData['vid'] = commentId;
+
+      await _db
+          .collection('events')
+          .doc(eventId)
+          .collection('volunteers')
+          .doc(commentId)
+          .set(userData);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Stream<List<CommentModel>> getCommentsStreamVolunteer(String vid) {
+    return _db
+        .collection('users')
+        .doc(vid)
+        .collection('comments')
+        .orderBy('time', descending: true)
+        .snapshots()
+        .map((event) {
+      return event.docs.map((commentDoc) {
+        final data = commentDoc.data();
+        return CommentModel.fromJson(data);
+      }).toList();
+    });
+  }
 
   Stream<List<CommentModel>> getCommentsStream(String eventId) {
     return _db
@@ -134,6 +168,29 @@ class FirestoreService {
         .doc(commentId)
         .update({
       'likes': FieldValue.arrayUnion([uid]),
+    });
+  }
+
+  Future<void> likeCommentVolunteer(String eventId, String commentId) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await _db
+        .collection('users')
+        .doc(eventId)
+        .collection('comments')
+        .doc(commentId)
+        .update({
+      'likes': FieldValue.arrayUnion([uid]),
+    });
+  }
+  Future<void> unlikeCommentVolunteer(String eventId, String commentId) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await _db
+        .collection('users')
+        .doc(eventId)
+        .collection('comments')
+        .doc(commentId)
+        .update({
+      'likes': FieldValue.arrayRemove([uid]),
     });
   }
 

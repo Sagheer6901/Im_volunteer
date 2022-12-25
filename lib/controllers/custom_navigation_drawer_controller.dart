@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:i_am_volunteer/routes/app_routes.dart';
 import 'package:i_am_volunteer/ui/event/add_event.dart';
-import 'package:i_am_volunteer/ui/volunteer_card.dart';
+import 'package:i_am_volunteer/ui/volunteer/volunteer_card.dart';
+import 'package:i_am_volunteer/ui/volunteer/volunteers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/auth_service.dart';
@@ -30,7 +31,8 @@ class CustomNavigationDrawerController extends GetxController {
       Get.to(()=>VolunteerCards());
     }
     else if(screenName == 'Manage Volunteer'){
-      Get.toNamed(AppRoutes.manageVolunteers);
+      Get.to(()=> Volunteers());
+      // Get.toNamed(AppRoutes.manageVolunteers);
     }
     else if(screenName == "Add Event"){
       Get.to(()=>AddEvent());

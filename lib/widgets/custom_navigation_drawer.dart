@@ -12,7 +12,7 @@ import '../services/auth_service.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   final controller = Get.find<CustomNavigationDrawerController>();
-  final authService = locator.get<AuthService>();
+  // final authService = locator.get<AuthService>();
 
   CustomNavigationDrawer({super.key});
   @override

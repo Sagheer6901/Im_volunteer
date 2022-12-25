@@ -21,6 +21,7 @@ class ScreenBinding extends Bindings {
     Get.lazyPut(() => AuthController());
     Get.lazyPut(() => HomeScreenController());
     Get.lazyPut(() => CustomBottomNavBarController(),
+
         tag: AppRoutes.kBottomNavigationController);
     Get.lazyPut(() => CalenderScreenController());
     Get.lazyPut(() => PaidVolunteerScreenController());

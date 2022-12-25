@@ -5,6 +5,8 @@ import 'package:i_am_volunteer/controllers/custom_navigation_drawer_controller.d
 import 'package:i_am_volunteer/controllers/home_controller.dart';
 import 'package:i_am_volunteer/main.dart';
 import 'package:i_am_volunteer/models/user_model.dart';
+import 'package:i_am_volunteer/services/auth_service.dart';
+import 'package:i_am_volunteer/services/locator.dart';
 import 'package:i_am_volunteer/ui/event/add_event.dart';
 import 'package:i_am_volunteer/widgets/custom_button.dart';
 import 'package:i_am_volunteer/widgets/custom_text.dart';
@@ -63,7 +65,7 @@ class HomeScreen extends StatelessWidget {
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("Loading");
+                return Center(child: const CircularProgressIndicator());
               }
               if (snapshot.data!.size == 0) {
                 return const Center(child: Text("There is no Lead"));
@@ -92,15 +94,15 @@ class HomeScreen extends StatelessWidget {
           ),
 
           StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('events').snapshots(),
+            stream: FirebaseFirestore.instance.collection('events').orderBy('eventDate', descending: true)
+        .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
               }
 
-
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("Loading");
+                return Center(child: const CircularProgressIndicator());
               }
               if (snapshot.data!.size == 0) {
                 return const Center(
@@ -139,13 +141,19 @@ class HomeScreen extends StatelessWidget {
               // );
             },
           ),
-          controllerAuth.authService.user!.role ==Role.admin?Container(
-              height: 40,
-              margin: EdgeInsets.only(bottom: 50,top: 10),
-              child: CustomButton(label: "Add Event",color: AppColors.secondary,textColor: AppColors.primary, onTap: (){
-                Get.to(()=> AddEvent());
-              })):SizedBox()
-       ],
+          controllerAuth.authService.user!.role == Role.admin
+              ? Container(
+                  height: 40,
+                  margin: EdgeInsets.only(bottom: 50, top: 10),
+                  child: CustomButton(
+                      label: "Add Event",
+                      color: AppColors.secondary,
+                      textColor: AppColors.primary,
+                      onTap: () {
+                        Get.to(() => AddEvent());
+                      }))
+              : SizedBox()
+        ],
       ),
     );
   }
@@ -262,24 +270,28 @@ class HomeScreen extends StatelessWidget {
         const Icon(Icons.chat_bubble_outline),
         const Spacer(),
         isEventOpen
-            ? (controller.indicator?CircularProgressIndicator(color: AppColors.secondary,):GestureDetector(
-          onTap: () {
-            // controller.onApplyVolunteer(data['eventId']);
-
-          },
-          child: Container(
-            height: 40,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                    color: AppColors.primary.withOpacity(0.4), width: 2)),
-            child: const CustomText(
-              text: 'Apply For Volunteer',
-              weight: FontWeight.w600,
-            ),
-          ),
-        ))
+            ? (controller.indicator
+                ? CircularProgressIndicator(
+                    color: AppColors.secondary,
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      // controller.onApplyVolunteer(data['eventId']);
+                    },
+                    child: Container(
+                      height: 40,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                              color: AppColors.primary.withOpacity(0.4),
+                              width: 2)),
+                      child: const CustomText(
+                        text: 'Apply For Volunteer',
+                        weight: FontWeight.w600,
+                      ),
+                    ),
+                  ))
             : const SizedBox()
       ],
     );

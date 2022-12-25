@@ -26,7 +26,7 @@ class ManageVolunteersController extends GetxController
     Get.back();
   }
 
-  pdfCreation(admin) async {
+  pdfCreation(admin, vid, eventId, uid) async {
     final pdf = pw.Document();
     pdf.addPage(pw.Page(
         build: (pw.Context context) {
@@ -44,18 +44,31 @@ class ManageVolunteersController extends GetxController
     if (file != null) {
       firebase_storage.Reference imageRef =
           firebase_storage.FirebaseStorage.instance.ref(
-              'eventVolunteerCards/CHBmVSIxK6gJeMnEYgcD4sVbGdF2-${FirebaseAuth.instance.currentUser!.uid}');
+              'eventVolunteerCards/$eventId-${FirebaseAuth.instance.currentUser!.uid}');
       UploadTask task = imageRef.putData(file.readAsBytesSync());
       await Future.value(task);
 
-      FirebaseFirestore.instance
+      FirebaseFirestore.instance    //////////// not working
           .collection('users')
-          .doc("Y3feimlhlSOu4iDotiSK9nIM5ZC2")
+          .doc(uid)
           .collection("eventCards")
           .add({
-        "eventId": "sfafsdfasfsdfasdfasdf",
+        "eventId": "$eventId",
         "eventName": "second of month",
         "volunteerCard": await imageRef.getDownloadURL()
+      });
+      FirebaseFirestore.instance   /// working properly
+          .collection('events')
+          .doc(eventId)
+          .collection("volunteers").doc(vid)
+          .update({
+        "volunteer": true
+      });
+      FirebaseFirestore.instance   /// working properly
+          .collection('users')
+          .doc(uid)
+          .update({
+        "volunteer": true
       });
       // Share.shareFiles(subject: "appName", [file.path], text: 'pdf');
     }

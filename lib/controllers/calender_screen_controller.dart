@@ -10,7 +10,7 @@ import 'custom_bottom_navbar_controller.dart';
 
 class CalenderScreenController extends GetxController{
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  late List<DateTime> toHighlight= [];
+  late RxList<DateTime> toHighlight= <DateTime>[].obs;
   Rx<CalendarFormat> calendarFormat = CalendarFormat.month.obs;
   Rx<DateTime> focusedDay = DateTime.now().obs;
   Rx<DateTime> selectedDay=DateTime.now().obs;
@@ -26,8 +26,8 @@ class CalenderScreenController extends GetxController{
   }
 
   @override
-  void onInit() {
-    FirebaseFirestore.instance
+  Future<void> onInit() async {
+    await FirebaseFirestore.instance
         .collection('events')
         .get()
         .then((QuerySnapshot querySnapshot) {

@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/paid_volunteer_screen_controller.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
@@ -90,7 +91,7 @@ class PaidVolunteerScreen extends StatelessWidget{
                           .map((DocumentSnapshot document) {
                         Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
-                        return             informationCard(profileImage: data['image'].toString(), name: data['name'].toString(), profession: data['profession'].toString(), experience: '${data['experience']} Years', contactNum: '+${data['contactNo']}',price: data['price'].toString());
+                        return  informationCard(profileImage: data['image'].toString(), name: data['name'].toString(), profession: data['profession'].toString(), experience: '${data['experience']} Years', contactNum: '+${data['contactNo']}',price: data['price'].toString(), fbUrl: data['fbUrl'] , instaUrl: data['instaUrl'] );
                       }).toList()),
                 );
                 //     return Text('nodata');
@@ -128,7 +129,7 @@ class PaidVolunteerScreen extends StatelessWidget{
     );
   }
 
-  Widget informationCard({required String profileImage, required String name,required String profession,required String experience,required String contactNum,required String price}){
+  Widget informationCard({required String profileImage, required String name,required String profession,required String experience,required String contactNum,required String price, instaUrl, fbUrl}){
     return Padding(
       padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
       child: Container(
@@ -145,15 +146,26 @@ class PaidVolunteerScreen extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             profileImageWidget(image: profileImage),
+            SizedBox(height: 5,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(
                   textAlign: TextAlign.center,
                   text: name,color: AppColors.primary,weight: FontWeight.w700,fontSize: 20),
-                const SizedBox(width: 4,),
-                Icon(Icons.facebook,size: 20,color: AppColors.heading.withOpacity(0.3),),
-                Image.asset(AppAssets.instaIcon,height: 20,color: AppColors.heading.withOpacity(0.3),)
+                const SizedBox(width: 10,),
+                IconButton(
+                    onPressed: (){
+                      _launchUrl(fbUrl);
+                    },
+                    icon: Icon(Icons.facebook,size: 20,color: AppColors.heading.withOpacity(0.3),)),
+                SizedBox(width: 10,),
+
+                InkWell(
+                    onTap: (){
+                      _launchUrl(instaUrl);
+                    },
+                    child: Image.asset(AppAssets.instaIcon,height: 20,color: AppColors.heading.withOpacity(0.3),))
               ],
             ),
             profileInformation(profession: profession, experience: experience, contactNum: contactNum),
@@ -187,7 +199,12 @@ class PaidVolunteerScreen extends StatelessWidget{
           child: Image.network(image, fit: BoxFit.cover)),
     );
   }
-
+  Future<void> _launchUrl(url) async {
+    final Uri _url = Uri.parse(url);
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
+  }
   Widget profileInformation(
       {required String profession, required String experience, required String contactNum}){
     return Padding(

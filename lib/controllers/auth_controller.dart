@@ -52,7 +52,7 @@ class AuthController extends GetxController {
     // firestore.collection('users').doc(auth.currentUser!.uid);
     if (registerFormKey.currentState!.validate()) {
       loading.value = true;
-      String email = emailController.text.trim();
+      String email = emailController.text.toLowerCase().trim();
       String password = passwordController.text.trim();
       String name = nameController.text.trim();
       String? token = await messaging.getToken();
@@ -68,7 +68,7 @@ class AuthController extends GetxController {
         "phoneNumber": null,
         "rollNo": null,
         "volunteer": false,
-        // "uid": authService.user.uid,
+        "uid": authService.user!.uid,
         'token': token,
       };
       UserModel user = UserModel.fromJson(data);
@@ -116,7 +116,7 @@ class AuthController extends GetxController {
 
     if (loginFormKey.currentState!.validate()) {
       loading.value = true;
-      final email = emailController.text.trim();
+      final email = emailController.text.toLowerCase().trim();
       final password = passwordController.text.trim();
       final isLoggedIn = await authService.login(
         email: email,

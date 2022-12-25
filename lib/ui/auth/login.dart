@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_am_volunteer/ui/auth/forgot_password.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../painters/login_painter.dart';
@@ -119,6 +120,23 @@ class Login extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 30,
+                  right: 30,
+                ),
+                child: GestureDetector(
+                    onTap: () {
+                      Get.to(()=>ForgotPasswordScreen());
+                    },
+                    child: Text(
+                      'Forgot Password',
+                      style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15),
+                    )),
               ),
               // const SizedBox(
               //   height: 15,

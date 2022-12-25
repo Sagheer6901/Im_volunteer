@@ -56,7 +56,11 @@ class HomeScreenController extends GetxController {
               backgroundColor: AppColors.secondary);
         } else {
 
-          await firestoreService.applyVolunteer(eventId);
+           firestoreService.applyVolunteer(eventId,data);
+           FirebaseFirestore.instance.collection("events").doc(eventId).update(
+               {
+                 "applied": FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.uid])
+               });
 
           // apply(eventId, data);
           // var dat;

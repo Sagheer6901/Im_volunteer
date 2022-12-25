@@ -1,22 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_am_volunteer/controllers/calender_events.dart';
+import 'package:i_am_volunteer/controllers/custom_navigation_drawer_controller.dart';
 import 'package:i_am_volunteer/controllers/home_controller.dart';
+import 'package:i_am_volunteer/models/event_model.dart';
+import 'package:i_am_volunteer/routes/app_routes.dart';
 import 'package:i_am_volunteer/utils/app_colors.dart';
+import 'package:i_am_volunteer/widgets/custom_scaffold.dart';
 import 'package:i_am_volunteer/widgets/custom_text.dart';
+import 'package:i_am_volunteer/widgets/event.dart';
 
 import '../../controllers/calender_screen_controller.dart';
 
 class DayEvents extends StatelessWidget {
-  final controller = Get.find<CalenderScreenController>();
+  final controller = Get.put(CalenderEventsController());
   final homeController = Get.find<HomeScreenController>();
 
+  final controllerAuth = Get.find<CustomNavigationDrawerController>();
   DayEvents({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
+
       body: _getBody(),
+      showBottomNavigation: false,
+      onWillPop: controller.onWillPop,
+      scaffoldKey: controller.scaffoldKey,
+      screenName: 'Events Screen',
     );
   }
 
@@ -46,18 +58,30 @@ class DayEvents extends StatelessWidget {
                 return Expanded(
                     child: ListView(
                         shrinkWrap: true,
-                        // itemCount: snapshot.data!.docs.length,
-                        // itemBuilder: ((context, index) {
-                        children: snapshot.data!.docs
-                            .map((DocumentSnapshot document) {
-                          Map<String, dynamic> data =
-                              document.data()! as Map<String, dynamic>;
-                          return postWidget(
-                              title: data['title'],
-                              image: data['image'],
-                              name: data['adminName'],
-                              profileImage: data['adminImage'],
-                              openEvent: data['openEvent']);
+                        children: snapshot.data!.docs.map((document) {
+                          final data = document.data() as Map<String, dynamic> ;
+                          final event = EventModel.fromJson(data);
+
+                          return EventWidget(
+                            event: event,
+                            onApplyForVolunteer: () {
+                              homeController.onApplyVolunteer(data['eventId']);
+                            },
+                            onPostTapped: () {
+                              Get.toNamed(
+                                AppRoutes.eventDetails,
+                                arguments: {
+                                  'event': event,
+                                },
+                              );
+                            },
+                          );
+                          // return postWidget(
+                          //     title: data['title'],
+                          //     image: data['image'],
+                          //     name: data['adminName'],
+                          //     profileImage: data['adminImage'],
+                          //     openEvent: data['openEvent']);
                         }).toList()));
                 //     return Text('nodata');
                 //   }),
