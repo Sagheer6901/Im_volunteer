@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_am_volunteer/controllers/manage_event_controller.dart';
 import 'package:i_am_volunteer/widgets/custom_scaffold.dart';
+import 'package:i_am_volunteer/widgets/custom_text.dart';
 
 import '../../utils/app_colors.dart';
 
@@ -36,25 +37,53 @@ class VolunteerCards extends StatelessWidget {
               (DocumentSnapshot document) {
                 Map<String, dynamic> data =
                     document.data()! as Map<String, dynamic>;
-                return Container(
-                  padding: EdgeInsets.all(10),
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.primary,
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: 'Cards For Volunteers',
+                            fontSize: 30,
+                            color: AppColors.primary,
+                            weight: FontWeight.w700,
+                          ),
+                          // const Icon(
+                          //   Icons.search,
+                          // ),
+                        ],
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(
-                      20,
+                    FittedBox(child: Text("Click Event Button to Download your Card",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),)),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(10),
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.primary,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            20,
+                          ),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            controller.download(data['volunteerCard']);
+                          },
+                          child: FittedBox(
+                            child: Text(
+                              data['eventName'],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      controller.download(data['volunteerCard']);
-                    },
-                    child: Text(
-                      data['eventName'],
-                    ),
-                  ),
+                  ],
                 );
               },
             ).toList(),

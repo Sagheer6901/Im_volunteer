@@ -116,7 +116,7 @@ class Volunteers extends StatelessWidget {
             height: 5,
           ),
           CustomText(
-            text: "2018",
+            text: "${data['batch']}",
             fontSize: 16,
             weight: FontWeight.w600,
           ),

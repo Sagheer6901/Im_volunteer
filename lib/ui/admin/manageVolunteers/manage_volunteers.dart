@@ -212,7 +212,7 @@ class ManageVolunteers extends StatelessWidget {
                     //     {
                     //       "volunteer":true
                     //     });
-                    controller.pdfCreation("${data['email']}", data['vid'], eventId, data['uid']);
+                    controller.pdfCreation("${data['email']}", data['vid'], eventId, data['uid'],data);
                   })
         ],
       ),

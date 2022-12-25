@@ -188,7 +188,7 @@ class EventWidget extends StatelessWidget {
                 ? GestureDetector(
                     onTap: onApplyForVolunteer,
                     child: Container(
-                      height: 40,
+                      height: 45,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
