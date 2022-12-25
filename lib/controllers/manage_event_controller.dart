@@ -6,12 +6,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:i_am_volunteer/controllers/custom_bottom_navbar_controller.dart';
+import 'package:i_am_volunteer/routes/app_routes.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ManageEventController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   ReceivePort _port = ReceivePort();
+  CustomBottomNavBarController bottomNavigationController = Get.find(tag: AppRoutes.kBottomNavigationController);
+  Future<bool> onWillPop() {
+    bottomNavigationController.selectedNav.value = 2;
+    Get.back();
 
+    return Future.value(false);
+  }
   @override
   void onInit() {
     IsolateNameServer.registerPortWithName(

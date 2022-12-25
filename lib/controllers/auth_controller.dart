@@ -68,6 +68,7 @@ class AuthController extends GetxController {
         "phoneNumber": null,
         "rollNo": null,
         "volunteer": false,
+        "eventVolunteer": false,
         "uid": authService.user!.uid,
         'token': token,
       };

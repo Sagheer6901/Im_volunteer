@@ -56,7 +56,7 @@ class ManageVolunteers extends StatelessWidget {
                         .collection('events')
                         .doc(eventId)
                         .collection("volunteers")
-                        .where("volunteer", isEqualTo: false)
+                        .where("eventVolunteer", isEqualTo: false)
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -95,7 +95,7 @@ class ManageVolunteers extends StatelessWidget {
                         .collection('events')
                         .doc(eventId)
                         .collection("volunteers")
-                        .where("volunteer", isEqualTo: true)
+                        .where("eventVolunteer", isEqualTo: true)
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -183,7 +183,7 @@ class ManageVolunteers extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          data['volunteer'] == true
+          data['eventVolunteer'] == true
               ? CustomButton(
                   onTap: () {
                     // controller.pdfCreation("${data['email']}", data['vid'], eventId, controllerAuth.authService.user!.uid);

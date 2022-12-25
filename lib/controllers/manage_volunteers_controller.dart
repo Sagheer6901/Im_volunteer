@@ -43,33 +43,41 @@ class ManageVolunteersController extends GetxController
                   decoration: pw.BoxDecoration(
                       border: pw.Border.all(color: PdfColors.purple400),
                       borderRadius: pw.BorderRadius.all(pw.Radius.circular(5))),
-                  child: pw.Column(children: [
+                  child: pw.Column(
+                      children: [
                     pw.Text(userData["name"],
                         style: pw.TextStyle(
-                          fontSize: 24,
+                          fontSize: 30,
                         )),
+                    pw.SizedBox(height: 30),
                     pw.Text(
                       userData["email"],
                       style: pw.TextStyle(
-                        fontSize: 24,
+                        fontSize: 30,
                       ),
                     ),
-                    pw.Text(
+                        pw.SizedBox(height: 30),
+
+                        pw.Text(
                       userData["dept"],
                       style: pw.TextStyle(
-                        fontSize: 24,
+                        fontSize: 30,
                       ),
                     ),
-                    pw.Text(
+                        pw.SizedBox(height: 30),
+
+                        pw.Text(
                       userData["batch"].toString(),
                       style: pw.TextStyle(
-                        fontSize: 24,
+                        fontSize: 30,
                       ),
                     ),
-                    pw.Text(
+                        pw.SizedBox(height: 30),
+
+                        pw.Text(
                       "Im Volunteer",
                       style: pw.TextStyle(
-                        fontSize: 30,
+                        fontSize: 50,
                         color: PdfColors.purple800
                       ),
                     )
@@ -91,7 +99,7 @@ class ManageVolunteersController extends GetxController
       UploadTask task = imageRef.putData(file.readAsBytesSync());
       await Future.value(task);
 
-      FirebaseFirestore.instance //////////// not working
+      FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
           .collection("eventCards")
@@ -107,7 +115,7 @@ class ManageVolunteersController extends GetxController
           .doc(eventId)
           .collection("volunteers")
           .doc(vid)
-          .update({"volunteer": true});
+          .update({"eventVolunteer": true});
       FirebaseFirestore.instance
 
           /// working properly
