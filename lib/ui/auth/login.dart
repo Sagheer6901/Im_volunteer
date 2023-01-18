@@ -96,7 +96,7 @@ class Login extends StatelessWidget {
                 paddingVertical: 10,
                 controller: controller.passwordController,
                 hint: 'PASSWORD',
-                suffixIcon: Icons.remove_red_eye_outlined,
+                suffixIcon: Icons.password,
                 hideText: true,
                 validator: passwordValidator,
               ),
