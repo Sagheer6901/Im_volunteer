@@ -16,7 +16,7 @@ class ChatService {
   final _messaging = FirebaseMessaging.instance;
   final firestoreService = locator.get<FirestoreService>();
 
-  Stream<List<ChatItem>> chatStreams(String chatID) async* {
+  Stream<List<ChatItem>> chatStreams(String? chatID) async* {
     yield* _db
         .collection('chats')
         .doc(chatID)
@@ -30,15 +30,17 @@ class ChatService {
     });
   }
 
-  Future<void> sendChat(String message, String chatId) async {
+  Future<void> sendChat(String message, String? chatId) async {
     // List<String> adminUids = await firestoreService.getAdminUids();
     final currentUid = _auth.currentUser!.uid;
+    print("chat id $currentUid  $chatId");
     // adminUids.addIf(!adminUids.contains(currentUid), currentUid);
     await _db.collection('chats').doc(chatId).collection('messages').add({
       'sentBy': currentUid,
       'message': message,
       'time': FieldValue.serverTimestamp(),
     });
+
 
     // final ref = await _db
     //     .collection('chats')

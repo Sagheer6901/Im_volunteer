@@ -23,6 +23,7 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      onWillPop: controller.onWillPop,
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('users')
@@ -48,7 +49,6 @@ class UserProfileScreen extends StatelessWidget {
         },
       ),
       // body: _getBody(),
-      onWillPop: controller.onBack,
       scaffoldKey: controller.scaffoldKey,
       screenName: 'User Profile Screen',
     );
@@ -298,8 +298,9 @@ class UserProfileScreen extends StatelessWidget {
                                 label: 'Update',
                                 onTap: () async {
                                   if (controller
-                                          .phoneNumberController.text.length <=
+                                          .phoneNumberController.text.length >=
                                       12)
+
                                     await FirebaseFirestore.instance
                                         .collection("users")
                                         .doc("${FirebaseAuth.instance.currentUser!.uid}")

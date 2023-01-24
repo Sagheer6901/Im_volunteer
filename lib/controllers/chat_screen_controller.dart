@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_am_volunteer/models/user_model.dart';
 import 'package:i_am_volunteer/services/chat_service.dart';
 import 'package:i_am_volunteer/services/firestore_service.dart';
 import 'package:i_am_volunteer/services/locator.dart';
@@ -23,8 +24,11 @@ class ChatScreenController extends GetxController {
   final fireService = locator.get<FirestoreService>();
   Rx<List<ChatItem>> messages = Rx<List<ChatItem>>([]);
 
-  void subscribeForMessages(String chatID) {
-    chatService.chatStreams(chatID).listen((event) {
+
+
+
+  Future<void> subscribeForMessages(String? chatID) async {
+    await chatService.chatStreams(chatID).listen((event) {
       if (event.isNotEmpty) {
         const equality = ListEquality();
         if (!equality.equals(event, messages.value)) {
@@ -45,7 +49,7 @@ class ChatScreenController extends GetxController {
     chatLoading.value = false;
   }
 
-  Future<void> getChatWithUser(String userUid) async {
+  Future<void> getChatWithUser(String userUid, name) async {
     loading.value = true;
     final chatID = await chatService.getAdminChatWithUser(userUid);
     loading.value = false;
@@ -53,6 +57,7 @@ class ChatScreenController extends GetxController {
       AppRoutes.chatScreen,
       arguments: {
         'chatID': chatID,
+        'name': name,
       },
     );
   }
@@ -66,27 +71,22 @@ class ChatScreenController extends GetxController {
         AppRoutes.chatScreen,
         arguments: {
           'chatID': chatID,
+
         },
       );
     } else {
       log('chat does not exist!');
-      final chatID = await chatService.createUserChatWithAdmin();
-      chatLoading.value = false;
+      // final chatID = await chatService.createUserChatWithAdmin();
+      // chatLoading.value = false;
       Get.toNamed(
         AppRoutes.chatScreen,
         arguments: {
-          'chatID': chatID,
+          'chatID': null,
         },
       );
     }
   }
 
-  @override
-  void dispose() {
-    messageText.dispose();
-    scrollController.dispose();
-    super.dispose();
-  }
 
   void removeFocus() {
     if (messageTextFocus.hasFocus) {
@@ -110,11 +110,43 @@ class ChatScreenController extends GetxController {
     return Future.value(false);
   }
 
-  Future<void> sendText(String chatID) async {
+  final chatI = "".obs;
+
+
+  Future<void> sendText(String? chatID,userRole) async {
     String text = messageText.text.trim();
-    if (text.isNotEmpty) {
-      messageText.clear();
-      await chatService.sendChat(text, chatID);
+    if(userRole != Role.admin){
+      if(chatI.value.toString() == "" && chatID ==null){
+        chatI.value = await chatService.createUserChatWithAdmin();
+        if (text.isNotEmpty) {
+          messageText.clear();
+          await chatService.sendChat(text, chatI.value);
+          // subscribeForMessages(chatI.value);
+        }
+      }
+      else{
+        final chat = await chatService.getUserChatWithAdminID();
+        if (text.isNotEmpty) {
+          messageText.clear();
+          await chatService.sendChat(text, chat);
+        }
+      }
     }
+    else{
+      if (text.isNotEmpty) {
+        messageText.clear();
+        await chatService.sendChat(text, chatID);
+      }
+    }
+
   }
+
+  @override
+  void dispose() {
+    messageText.dispose();
+    scrollController.dispose();
+    chatI.value == "";
+    super.dispose();
+  }
+
 }

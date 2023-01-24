@@ -117,7 +117,7 @@ class FirestoreService {
       final commentId =
           _db.collection('events').doc(eventId).collection('volunteers').doc().id;
       userData['vid'] = commentId;
-
+      userData['eventVolunteer']= false;
       await _db
           .collection('events')
           .doc(eventId)

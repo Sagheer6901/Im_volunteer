@@ -21,15 +21,18 @@ class Register extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _topIllustration(),
-            SizedBox(height: 20,),
-            Expanded(
-              child: _body(),
-            ),
-          ],
+      body: WillPopScope(
+        onWillPop: controller.onWillPop,
+        child: SafeArea(
+          child: Column(
+            children: [
+              _topIllustration(),
+              SizedBox(height: 20,),
+              Expanded(
+                child: _body(),
+              ),
+            ],
+          ),
         ),
       ),
     );

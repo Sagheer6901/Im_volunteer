@@ -45,42 +45,43 @@ class ManageVolunteersController extends GetxController
                       borderRadius: pw.BorderRadius.all(pw.Radius.circular(5))),
                   child: pw.Column(
                       children: [
-                    pw.Text(userData["name"],
+                    pw.Center(child: pw.Text(userData["name"],
                         style: pw.TextStyle(
                           fontSize: 30,
-                        )),
+                        ))),
                     pw.SizedBox(height: 30),
-                    pw.Text(
+                    pw.Center(child: pw.Text(
                       userData["email"],
                       style: pw.TextStyle(
                         fontSize: 30,
                       ),
-                    ),
+                    )),
                         pw.SizedBox(height: 30),
 
-                        pw.Text(
-                      userData["dept"],
-                      style: pw.TextStyle(
-                        fontSize: 30,
-                      ),
-                    ),
+                       pw.Center(child:  pw.Text(
+                         userData["dept"],
+                         style: pw.TextStyle(
+                           fontSize: 30,
+                         ),
+                       ),),
                         pw.SizedBox(height: 30),
 
-                        pw.Text(
-                      userData["batch"].toString(),
-                      style: pw.TextStyle(
-                        fontSize: 30,
-                      ),
-                    ),
+                        pw.Center(child: pw.Text(
+                          userData["batch"].toString(),
+                          style: pw.TextStyle(
+                            fontSize: 30,
+                          ),
+                        ),),
                         pw.SizedBox(height: 30),
 
-                        pw.Text(
-                      "Im Volunteer",
-                      style: pw.TextStyle(
-                        fontSize: 50,
-                        color: PdfColors.purple800
-                      ),
-                    )
+                        pw.Center(child: pw.Text(
+                          "Im Volunteer",
+                          style: const pw.TextStyle(
+                              fontSize: 50,
+                              color: PdfColors.purple800
+
+                          ),
+                        ))
                   ])));
         },
         pageFormat: PdfPageFormat.a4));

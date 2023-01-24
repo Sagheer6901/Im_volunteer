@@ -6,11 +6,11 @@ class UserModel {
   String? email;
   String? image;
   String? name;
-  int? phoneNumber;
+  String? phoneNumber;
   Role? role;
   String? uid;
   String? token;
-  int? batch;
+  String? batch;
   List? events;
   bool? volunteer;
 

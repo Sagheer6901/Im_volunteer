@@ -27,7 +27,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: _getBody(),
+      body: WillPopScope(
+          onWillPop: controller.onWillPop,
+          child: _getBody()),
       scaffoldKey: controller.scaffoldKey,
       screenName: 'Home Screen',
     );
@@ -82,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                       Map<String, dynamic> data =
                           document.data()! as Map<String, dynamic>;
                       return statusWidget(
-                          image: data['profile'], text: '${data['name']}');
+                          image: data['image'], text: '${data['name']}');
                     },
                   ).toList(),
                 ),

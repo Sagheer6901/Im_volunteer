@@ -41,7 +41,7 @@ class IAmVolunteer extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: AppRoutes.pages,
       initialRoute: AppRoutes.splash,
-
     );
   }
+
 }

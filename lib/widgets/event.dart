@@ -152,75 +152,84 @@ class EventWidget extends StatelessWidget {
   }
 
   Widget _bottomWidgetOfPost(bool isEventOpen, isLiked, event, isApplied) {
-    return Row(
+    return Column(
       children: [
-        Obx(
-          () => InkWell(
-            onTap: () async {
-              if (isLiked.value) {
-                await controller.unlikeEvent(
-                  event.eventId!,
-                );
-              } else {
-                await controller.likeEvent(
-                  event.eventId!,
-                );
-              }
-              isLiked.value = !isLiked.value;
-            },
-            child: Icon(
-              isLiked.value ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-              color: Colors.red,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+          Text("Last Date for Registration: ${DateTime.fromMillisecondsSinceEpoch(event.lastDate).day}/${DateTime.fromMillisecondsSinceEpoch(event.lastDate).month}/${DateTime.fromMillisecondsSinceEpoch(event.lastDate).year} ", style: TextStyle(fontWeight: FontWeight.w600),)
+        ],),
+        Row(
+          children: [
+            Obx(
+              () => InkWell(
+                onTap: () async {
+                  if (isLiked.value) {
+                    await controller.unlikeEvent(
+                      event.eventId!,
+                    );
+                  } else {
+                    await controller.likeEvent(
+                      event.eventId!,
+                    );
+                  }
+                  isLiked.value = !isLiked.value;
+                },
+                child: Icon(
+                  isLiked.value ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                  color: Colors.red,
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(
-          width: 13,
-        ),
-        IconButton(
-          onPressed: onPostTapped,
-          icon: Icon(Icons.messenger_outline_sharp),
-          color: AppColors.primary,
-        ),
-        const Spacer(),
-         (
-            controllerUser.authService.user!.email!.contains("admin")?SizedBox():(!isApplied.value
-                ? GestureDetector(
-                    onTap: onApplyForVolunteer,
-                    child: Container(
-                      height: 45,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: AppColors.primary.withOpacity(0.4),
-                          width: 2,
+            const SizedBox(
+              width: 13,
+            ),
+            IconButton(
+              onPressed: onPostTapped,
+              icon: Icon(Icons.messenger_outline_sharp),
+              color: AppColors.primary,
+            ),
+            const Spacer(),
+             (
+                controllerUser.authService.user!.email!.contains("admin")?SizedBox():(!isApplied.value
+                    ? GestureDetector(
+                        onTap: onApplyForVolunteer,
+                        child: Container(
+                          height: 45,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColors.primary.withOpacity(0.4),
+                              width: 2,
+                            ),
+                          ),
+                          child: const CustomText(
+                            text: 'Apply For Volunteer',
+                            weight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      child: const CustomText(
-                        text: 'Apply For Volunteer',
-                        weight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                : GestureDetector(
-                    child: Container(
-                      height: 40,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: AppColors.primary.withOpacity(0.4),
-                          width: 2,
+                      )
+                    : GestureDetector(
+                        child: Container(
+                          height: 40,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColors.primary.withOpacity(0.4),
+                              width: 2,
+                            ),
+                          ),
+                          child: const CustomText(
+                            text: 'Applied',
+                            weight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      child: const CustomText(
-                        text: 'Applied',
-                        weight: FontWeight.w600,
-                      ),
-                    ),
-                  )))
+                      )))
 
+          ],
+        ),
       ],
     );
   }

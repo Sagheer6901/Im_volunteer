@@ -46,7 +46,9 @@ class AuthController extends GetxController {
       }
     });
   }
-
+  Future<bool> onWillPop() async {
+    return false; //<-- SEE HERE
+  }
   Future<void> signUp() async {
     // DocumentReference ref =
     // firestore.collection('users').doc(auth.currentUser!.uid);
@@ -56,12 +58,13 @@ class AuthController extends GetxController {
       String password = passwordController.text.trim();
       String name = nameController.text.trim();
       String? token = await messaging.getToken();
-      final data = {
+
+      UserModel user = UserModel.fromJson({
         'name': name,
         'email': email,
         'image': null,
         "batch":null,
-        "cardIamge": null,
+        "cardImage": null,
         "dept":null,
         "events": [],
         'role': Role.user.name,
@@ -71,8 +74,7 @@ class AuthController extends GetxController {
         "eventVolunteer": false,
         "uid": authService.user!.uid,
         'token': token,
-      };
-      UserModel user = UserModel.fromJson(data);
+      });
       final isUserCreated = await authService.createUser(
         user: user,
         password: password,

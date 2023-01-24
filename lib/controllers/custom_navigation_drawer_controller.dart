@@ -27,7 +27,7 @@ class CustomNavigationDrawerController extends GetxController {
         Get.toNamed(AppRoutes.chatScreen);
       }
     }
-    else if(screenName == 'Manage Events'){
+    else if(screenName == 'Download Volunteer Card'){
       Get.to(()=>VolunteerCards());
     }
     else if(screenName == 'Manage Volunteer'){

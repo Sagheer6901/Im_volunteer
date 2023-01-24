@@ -20,12 +20,17 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final controller = Get.find<ChatScreenController>();
-  final chatID = Get.arguments['chatID'];
+  String? chatID = Get.arguments['chatID'];
+  String? name = Get.arguments['name'];
 
   @override
   void initState() {
     super.initState();
-    controller.subscribeForMessages(chatID);
+    // if(chatID==null){
+    //   print("chat not started");
+    // }else{
+      controller.subscribeForMessages(chatID);
+    // }
   }
 
   @override
@@ -40,69 +45,127 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _getBody() {
-    return Obx(() {
-      if (controller.chatLoading.value) {
-        return UiUtils.loader;
-      } else {
-        return SizedBox(
-          height: Get.height,
-          child: Stack(
+    // return Obx(() {
+    //   if (controller.chatLoading.value) {
+    //     return UiUtils.loader;
+    //   } else {
+    //     return SizedBox(
+    //       height: Get.height,
+    //       child: Stack(
+    //         children: [
+    //           Column(
+    //             children: [
+    //               _chatName(),
+    //               Expanded(
+    //                 flex: 9,
+    //                 child: Padding(
+    //                   padding: const EdgeInsets.only(
+    //                       left: 15, right: 15, bottom: 80),
+    //                   child: Obx(
+    //                     () {
+    //                       if (controller.messages.value.isEmpty) {
+    //                         return const Center(
+    //                           child: CustomText(
+    //                             text:
+    //                                 'No Messages!\n Be the first one to say Hi!',
+    //                             textAlign: TextAlign.center,
+    //                           ),
+    //                         );
+    //                       } else {
+    //                         log('LENGTH: ${controller.messages.value.length}');
+    //                         return ListView.builder(
+    //                           controller: controller.scrollController,
+    //                           physics: const BouncingScrollPhysics(),
+    //                           itemCount: controller.messages.value.length,
+    //                           reverse: true,
+    //                           itemBuilder: (context, index) {
+    //                             final chatItem =
+    //                                 controller.messages.value[index];
+    //                             if (chatItem.sentBy ==
+    //                                 controller.authService.user?.uid) {
+    //                               return senderMessage(
+    //                                 senderMessage: chatItem.message!,
+    //                                 time: chatItem.time,
+    //                               );
+    //                             } else {
+    //                               return recipientMessage(
+    //                                 recipientMessage: chatItem.message!,
+    //                                 time: chatItem.time,
+    //                               );
+    //                             }
+    //                           },
+    //                         );
+    //                       }
+    //                     },
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //           widgetTypeMessage(),
+    //         ],
+    //       ),
+    //     );
+    //   }
+    // });
+    return  SizedBox(
+      height: Get.height,
+      child: Stack(
+        children: [
+          Column(
             children: [
-              Column(
-                children: [
-                  _chatName(),
-                  Expanded(
-                    flex: 9,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, bottom: 80),
-                      child: Obx(
-                        () {
-                          if (controller.messages.value.isEmpty) {
-                            return const Center(
-                              child: CustomText(
-                                text:
-                                    'No Messages!\n Be the first one to say Hi!',
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          } else {
-                            log('LENGTH: ${controller.messages.value.length}');
-                            return ListView.builder(
-                              controller: controller.scrollController,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: controller.messages.value.length,
-                              reverse: true,
-                              itemBuilder: (context, index) {
-                                final chatItem =
-                                    controller.messages.value[index];
-                                if (chatItem.sentBy ==
-                                    controller.authService.user?.uid) {
-                                  return senderMessage(
-                                    senderMessage: chatItem.message!,
-                                    time: chatItem.time,
-                                  );
-                                } else {
-                                  return recipientMessage(
-                                    recipientMessage: chatItem.message!,
-                                    time: chatItem.time,
-                                  );
-                                }
-                              },
-                            );
-                          }
-                        },
-                      ),
-                    ),
+              _chatName(),
+              Expanded(
+                flex: 9,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, bottom: 80),
+                  child:
+
+                  Obx(() {
+                      if (controller.messages.value.isEmpty ) {
+                        return const Center(
+                          child: CustomText(
+                            text:
+                            'No Messages!\n Be the first one to say Hi!',
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      } else {
+                        log('LENGTH: ${controller.messages.value.length}');
+                        return ListView.builder(
+                          controller: controller.scrollController,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: controller.messages.value.length,
+                          reverse: true,
+                          itemBuilder: (context, index) {
+                            final chatItem =
+                            controller.messages.value[index];
+                            if (chatItem.sentBy ==
+                                controller.authService.user?.uid) {
+                              return senderMessage(
+                                senderMessage: chatItem.message!,
+                                time: chatItem.time,
+                              );
+                            } else {
+                              return recipientMessage(
+                                recipientMessage: chatItem.message!,
+                                time: chatItem.time,
+                              );
+                            }
+                          },
+                        );
+                      }
+                    },
                   ),
-                ],
+                ),
               ),
-              widgetTypeMessage(),
             ],
           ),
-        );
-      }
-    });
+          widgetTypeMessage(),
+        ],
+      ),
+    );
   }
 
   Widget _chatName() {
@@ -134,7 +197,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: user.isAdmin() ? user.name! : 'ADMIN',
+                      text: user.isAdmin() ? name! : 'ADMIN',
                       fontSize: 18,
                       weight: FontWeight.bold,
                       color: AppColors.primary,
@@ -155,6 +218,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget widgetTypeMessage() {
+    final user = controller.authService.user!;
     return Padding(
       padding: const EdgeInsets.only(left: 14, right: 14, bottom: 3, top: 4),
       child: Align(
@@ -203,7 +267,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 RawMaterialButton(
-                  onPressed: () => controller.sendText(chatID),
+                  onPressed: () => controller.sendText(chatID, user.role),
                   constraints: const BoxConstraints(),
                   elevation: 3.0,
                   fillColor: Colors.grey[300],

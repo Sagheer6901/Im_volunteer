@@ -28,7 +28,7 @@ class AddEventController extends GetxController{
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         adminName = doc['name'];
-        adminImage = doc['profile'];
+        adminImage = doc['image'];
 
         print(doc["first_name"]);
       });

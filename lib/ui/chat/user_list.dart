@@ -82,7 +82,7 @@ class UserList extends StatelessWidget {
     return InkWell(
       onTap: () async {
         if (controller.authService.user!.isAdmin()) {
-          controller.getChatWithUser(user.uid!);
+          controller.getChatWithUser(user.uid!,user.name);
         } else {
           await controller.createChat();
         }

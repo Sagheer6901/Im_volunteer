@@ -116,9 +116,9 @@ class _VolunteerDetailsState extends State<VolunteerDetails>
                             ],
                           ),
                         ),
-                        const Icon(
-                          Icons.more_vert,
-                        ),
+                        // const Icon(
+                        //   Icons.more_vert,
+                        // ),
                       ],
                     ),
                     const SizedBox(
@@ -420,7 +420,7 @@ class _VolunteerDetailsState extends State<VolunteerDetails>
                   (document) {
                 final data = document.data();
                 return statusWidget(
-                  image: data['profile'],
+                  image: data['image'],
                   text: '${data['name']}',
                 );
               },

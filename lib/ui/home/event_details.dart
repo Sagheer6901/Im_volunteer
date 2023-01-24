@@ -336,7 +336,7 @@ class _EventDetailsState extends State<EventDetails>
               (document) {
                 final data = document.data();
                 return statusWidget(
-                  image: data['profile'],
+                  image: data['image'],
                   text: '${data['name']}',
                 );
               },

@@ -17,13 +17,19 @@ class HomeScreenController extends GetxController {
   // Future<void> apply(String eventId) async {
   //   await firestoreService.applyEvent(eventId);
   // }
+  Future<bool> onWillPop() async {
+    return false; //<-- SEE HERE
+  }
   final uid = FirebaseAuth.instance.currentUser!.uid;
   apply(eventId, data) {
-    FirebaseFirestore.instance
-        .collection("events")
-        .doc(eventId)
-        .collection("volunteers")
-        .add(data);
+    var userData = data;
+    userData['eventVolunteer']=true;
+    print("data: volunteer $userData");
+    // FirebaseFirestore.instance
+    //     .collection("events")
+    //     .doc(eventId)
+    //     .collection("volunteers")
+    //     .add(userData);
   }
 
   @override

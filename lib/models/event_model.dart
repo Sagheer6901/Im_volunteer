@@ -7,6 +7,7 @@ class EventModel {
   String? image;
   bool? openEvent;
   String? title;
+  int? lastDate;
   List<String>? applied;
   List<String>? likes;
 
@@ -19,6 +20,7 @@ class EventModel {
     this.description,
     this.eventId,
     this.image,
+    this.lastDate,
     this.openEvent,
     this.title,
     this.likes,
@@ -33,6 +35,7 @@ class EventModel {
     eventId = json['eventId'];
     image = json['image'];
     openEvent = json['openEvent'];
+    lastDate  = json['lastDateForReg'];
     title = json['title'];
     likes = json['likes'].cast<String>();
     applied = json['applied'].cast<String>();
@@ -48,6 +51,7 @@ class EventModel {
     data['eventId'] = eventId;
     data['image'] = image;
     data['openEvent'] = openEvent;
+    data['lastDateForReg'] = lastDate;
     data['title'] = title;
     data['likes'] = likes;
     data['applied'] = applied;

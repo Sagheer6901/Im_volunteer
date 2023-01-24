@@ -153,7 +153,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                         children: [
                           drawerWidget(
                             Icons.mail_outline,
-                            'Manage Events',
+                            'Download Volunteer Card',
                           ),
                           drawerWidget(
                             Icons.mail_outline,

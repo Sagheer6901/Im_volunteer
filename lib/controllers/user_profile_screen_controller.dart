@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_am_volunteer/controllers/custom_bottom_navbar_controller.dart';
+import 'package:i_am_volunteer/routes/app_routes.dart';
 import 'package:i_am_volunteer/services/auth_service.dart';
 import 'package:i_am_volunteer/services/locator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +18,7 @@ class UserProfileScreenController extends GetxController {
   TextEditingController rollNoController = TextEditingController();
   TextEditingController batchController = TextEditingController();
   final authService = locator.get<AuthService>();
+  CustomBottomNavBarController bottomNavigationController = Get.find(tag: AppRoutes.kBottomNavigationController);
 
   // TextEditingController passwordController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
@@ -26,6 +29,12 @@ class UserProfileScreenController extends GetxController {
 
   String? localImage, localImage1;
   // TextEditingController passwordController = TextEditingController();
+  Future<bool> onWillPop() {
+    bottomNavigationController.selectedNav.value = 2;
+    Get.back();
+
+    return Future.value(false);
+  }
   pick(imageType) async {
     final ImagePicker picker = ImagePicker();
     final XFile? imagePicker =
@@ -107,7 +116,5 @@ class UserProfileScreenController extends GetxController {
   //   return message;
   // }
 
-  void onBack() {
-    Get.back();
-  }
+
 }
